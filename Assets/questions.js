@@ -1,18 +1,30 @@
-const questions = [
+module.exports = questions = 
     {
-        type: 'list',
-        message: 'Choose an operation?',
-        name: 'operation',
-        choices: ['View','Add','Update']
+    main: {
+        type: "list",
+        name: "operation",
+        message: "What would you like to do?",
+        choices: [
+            "View all employees",
+            "View all departments",
+            "View all roles",
+            "Add employee",
+            "Add department",
+            "Add role",
+            "Update employee"
+        ]
     },
+
+employee:[
     {
-        type: 'list',
-        message: 'To which group would you like to add records?',
-        name: 'add',
-        choices: ['Departments','Roles','Employees'],
-        when: (answers) => {
-            return answers.operation == 'Add'
-          }  
+        type: 'input',
+        message: 'First Name',
+        name: 'firstName',
+    }, 
+    {
+        type: 'input',
+        message: 'Last Name',
+        name: 'lastName',
     },
     {
         type: 'list',
@@ -31,7 +43,14 @@ const questions = [
         when: (answers) => {
             return answers.operation == 'Update'
           }  
-    }    
+    },
+    {
+        type: 'confirm',
+        message: 'Continue working?',
+        name: 'end',
+        default: true
+    }
 ]
+    }
 
 module.exports = questions;
