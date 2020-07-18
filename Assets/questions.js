@@ -1,6 +1,7 @@
 const { connection } = require("../config/orm")
 
 
+
 findRoles('name','title','id','role','department','department_id','id')
 findManagers('first_name','last_name','employee','manager_id')
 
