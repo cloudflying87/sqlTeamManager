@@ -7,8 +7,8 @@ class Department {
         return orm.selectAll('department')
     }
 
-    update(){
-        return orm.update('department',objColVals,value)
+    create(name){
+        return orm.create('department',['name'],[name])
     }
 }
 

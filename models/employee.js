@@ -2,7 +2,7 @@ const orm = require('../config/orm.js')
 
 class Employee {
     selectAll(){
-        return orm.selectAll('employee')
+        return orm.selectAllEmployees()
     }
 
     create(firstName,lastName,roleId,managerId){
