@@ -29,11 +29,11 @@ class ORM {
         return this.connection.query(queryString)
     }
 
-    update(table, objColVals, id) {
-      var queryString = `UPDATE ?? SET ? WHERE ?`;
+    update(table, objCol,Col, colName, id) {
+      var queryString = `UPDATE ?? SET ??=? WHERE ??=?`;
       console.log(queryString);
   
-      return this.connection.query(queryString, [table, objColVals, id])
+      return this.connection.query(queryString, [table, objCol,Col, colName, id])
     }
     
     remove(tableInput, colToSearch, valOfCol) {
@@ -58,6 +58,11 @@ class ORM {
 
     selectManagers(){
       const queryString = "SELECT id as value, concat(first_name,' ', last_name) as name from employee where manager_id is null;"
+      return this.connection.query(queryString);
+    }
+
+    findEmployee(){
+      const queryString = "SELECT id as value, concat(first_name,' ', last_name) name from employee;"
       return this.connection.query(queryString);
     }
 }

@@ -47,10 +47,14 @@ const init = () => {
                     await addRole() 
                     .then(init)    
                 break;
-                case 'Update employee':    
+                case 'Update employee':
+                   await updateEmployee()
+                   .then(init)
+                    
                 break;
-                case 'Delete employee':
-                    deleteEmployee()    
+                case 'Delete employee': 
+                    await deleteEmployee()
+                    .then(init)
                 break;
                 default:
                 break;
@@ -61,22 +65,38 @@ const init = () => {
 }
 
 const addRole = async () => {
-    try {
-        const departments = await orm.viewDepartmentINQ();
-        const result = await inquirer.prompt(questions.roleQ(departments))
-        await Role.create(result.title,result.salary,result.deptId)
-        console.log('Success')
-    } catch (error) {
-        console.log(error.message)
-    }
+    
+    const departments = await orm.viewDepartmentINQ();
+    const result = await inquirer.prompt(questions.roleQ(departments))
+    await Role.create(result.title,result.salary,result.deptId)
+    .then(console.log('Success'))
+    .catch(console.error)    
 };
 
 const addEmployee = async () => {
-        const role = await orm.viewRoleDept();
-        const manager = await orm.selectManagers();
-        const employeeInfo = await inquirer.prompt(questions.employeeQ(role,manager));
-        await Employee.create(employeeInfo.first_name,employeeInfo.last_name,employeeInfo.role_id,employeeInfo.manager_id)
-        .then(console.log(employeeInfo.manager_id))    
-        .catch(console.error)
+    const role = await orm.viewRoleDept();
+    const manager = await orm.selectManagers();
+    const employeeInfo = await inquirer.prompt(questions.employeeQ(role,manager));
+    await Employee.create(employeeInfo.first_name,employeeInfo.last_name,employeeInfo.role_id,employeeInfo.manager_id)
+    .then(console.log("Success"))    
+    .catch(console.error)
 };
+
+const updateEmployee = async () => {
+    const employee = await orm.findEmployee()
+    const role = await orm.viewRoleDept();
+    // const manager = await orm.selectManagers();
+    const employeeInfo = await inquirer.prompt(questions.updateEmployeeQ(employee,role));
+    await orm.update('employee','role_id',employeeInfo.role_id,'id',employeeInfo.update_Id)
+    .then(console.log("Success"))    
+    .catch(console.error)
+}
+
+const deleteEmployee = async () => {
+    const employee = await orm.findEmployee()
+    const employeeInfo = await inquirer.prompt(questions.employeeDelete(employee));
+    await orm.remove('employee','id',employeeInfo.delete)
+    .then(console.log("Success"))    
+    .catch(console.error)
+}
 init();

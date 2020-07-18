@@ -1,10 +1,5 @@
 const { connection } = require("../config/orm")
 
-
-
-findRoles('name','title','id','role','department','department_id','id')
-findManagers('first_name','last_name','employee','manager_id')
-
 module.exports = questions = 
     {
     main: {
@@ -20,8 +15,6 @@ module.exports = questions =
             "Add role",
             "Update employee",
             'Delete employee',
-            'Delete department',
-            'Delete role'
         ]
     },
 
@@ -47,6 +40,21 @@ employeeQ: (roleArr,mangArr) => [
         message: 'Who is the manager?',
         name: 'manager_id', 
         choices: mangArr
+    },
+],
+
+updateEmployeeQ: (employee,roleArr,mangArr) => [
+    {
+        type: 'list',
+        message: 'Which employee do you want to update?',
+        name: 'update_Id', 
+        choices: employee
+    },
+    {
+        type: 'list',
+        message: 'What is their new role?',
+        name: 'role_id', 
+        choices: roleArr
     },
 ],
     
@@ -76,6 +84,15 @@ departmentQ:[
     }
 
 ],
+
+employeeDelete: (employee) =>[
+    {
+        type:'list',
+        message:'Which employee would you like to remove?',
+        name:'delete',
+        choices: employee
+    }    
+    ]
 
     }
 
