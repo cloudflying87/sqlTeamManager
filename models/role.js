@@ -6,7 +6,7 @@ class Role {
     }
 
     create(title,salary,department_id){
-        return orm('role',['title','salary','deparment_id'],[title,salary,department_id])
+        return orm.create('role',['title','salary','department_id'],[title,salary,department_id])
     }
 
 }

@@ -30,38 +30,27 @@ const init = () => {
                         .then(init)
                     break;
                 case 'Add employee':
-                    await inquirer.prompt(questions.employeeQ)
-                    .then(async employeeInfo => {
-                        console.table(employeeInfo.role_id)
-                        await Employee.create(employeeInfo.first_name,employeeInfo.last_name,employeeInfo.role_id,employeeInfo.manager_id)
-                        .then(results => console.table(results))    
-                        .catch(console.error)
+                    await addEmployee()
                         .then(init)
-                    })
+                    
                 case 'Add department': 
                     await inquirer.prompt(questions.departmentQ)
                     .then(async departmentName => {
 
                         await Departments.create(departmentName.departmentName)
-                        .then(departmentName => console.table(departmentName))
+                        .then("Success")
                         .catch(console.error)
                         .then(init)
                     })
                 break;
                 case 'Add role':
-                        await addRole() 
-                    // await inquirer.prompt(questions.roleQ)
-                    // .then(async roleInfo => {
-
-                    //     await Role.create(roleInfo.title,roleInfo.salary,roleInfo.department_id)
-                    //     .then(console.log('Success'))
-                    //     .catch(console.error)
-                        .then(init)
-                    // })    
+                    await addRole() 
+                    .then(init)    
                 break;
                 case 'Update employee':    
                 break;
-                case 'Delete employee':    
+                case 'Delete employee':
+                    deleteEmployee()    
                 break;
                 default:
                 break;
@@ -75,10 +64,19 @@ const addRole = async () => {
     try {
         const departments = await orm.viewDepartmentINQ();
         const result = await inquirer.prompt(questions.roleQ(departments))
-        console.log(result)
+        await Role.create(result.title,result.salary,result.deptId)
+        console.log('Success')
     } catch (error) {
         console.log(error.message)
     }
 };
 
+const addEmployee = async () => {
+        const role = await orm.viewRoleDept();
+        const manager = await orm.selectManagers();
+        const employeeInfo = await inquirer.prompt(questions.employeeQ(role,manager));
+        await Employee.create(employeeInfo.first_name,employeeInfo.last_name,employeeInfo.role_id,employeeInfo.manager_id)
+        .then(console.log(employeeInfo.manager_id))    
+        .catch(console.error)
+};
 init();

@@ -45,11 +45,22 @@ class ORM {
       const queryString = 'SELECT ??, ??, ??.?? FROM ?? INNER JOIN ?? ON ??.?? = ??.??';
       const role = connection.query(queryString,[col1,col2,table1,col3,table1,table2,table1,id1,table2,id2])
     }
-    
+
     viewDepartmentINQ() {
       const queryString = "SELECT id as value, name FROM department"
       return this.connection.query(queryString);
-  };
+    };
+
+    viewRoleDept(){
+      const queryString = "select role.id as value, concat(name,' ',title) as name from department inner join role on department_id = department.id;"
+      return this.connection.query(queryString);
+   }
+
+    selectManagers(){
+      const queryString = "SELECT id as value, concat(first_name,' ', last_name) as name from employee where manager_id is null;"
+      return this.connection.query(queryString);
+    }
 }
+
 
 module.exports = new ORM(connection)
